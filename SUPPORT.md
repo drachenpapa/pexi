@@ -32,7 +32,7 @@ Spending the extra time upfront can help save everyone time in the long run.
 
 ## How to Report a Bug or Request an Enhancement
 
-This project manages bugs and enhancements using the [GitHub issue tracker](https://github.com/drachenpapa/skeletor/issues/).
+This project manages bugs and enhancements using the [GitHub issue tracker](https://github.com/drachenpapa/pexi/issues/).
 The issue templates will guide you on making an effective report.
 
 ## How to Report a Security Vulnerability
@@ -48,4 +48,4 @@ See [our contributing guidelines](CONTRIBUTING.md) on how to contribute.
 
 ## License
 
-This project is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). © [Henning Steinberg (@drachenpapa)](https://github.com/drachenpapa/)
+This project is licensed under [MIT License](LICENSE). © [Henning Steinberg (@drachenpapa)](https://github.com/drachenpapa/)
