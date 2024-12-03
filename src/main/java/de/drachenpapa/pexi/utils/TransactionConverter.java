@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Converts a ResultSet to a list of {@link Transaction}.
+ * Utility class for converting a {@link ResultSet} to a list of {@link Transaction} objects.
+ * <p>
+ * This class provides a method to map the result of a SQL query containing transaction data
+ * into a list of {@link Transaction} objects.
+ * </p>
  */
 public class TransactionConverter {
 
@@ -20,13 +24,17 @@ public class TransactionConverter {
     private static final String ACCOUNT_ID = "account_id";
     private static final String CATEGORY_ID = "category_id";
 
-
     /**
-     * Converts a ResultSet to a list of {@link Transaction}.
+     * Converts a {@link ResultSet} containing transaction data into a list of {@link Transaction} objects.
+     * <p>
+     * This method reads the columns from the {@link ResultSet} and constructs {@link Transaction} objects
+     * for each row in the result set. The columns are expected to be named "id", "date", "amount",
+     * "description", "account_id", and "category_id".
+     * </p>
      *
-     * @param resultSet The ResultSet containing transactions data.
-     * @return A list of {@link Transaction}.
-     * @throws SQLException If an SQL exception occurs.
+     * @param resultSet The {@link ResultSet} containing transaction data.
+     * @return A list of {@link Transaction} objects created from the result set.
+     * @throws SQLException If an SQL exception occurs while reading the {@link ResultSet}.
      */
     public static List<Transaction> convert(ResultSet resultSet) throws SQLException {
         List<Transaction> transactions = new ArrayList<>();

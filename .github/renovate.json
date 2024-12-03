@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Drachenpapa's default renovate configuration",
+  "description": "Renovate configuration for PEXI (Personal Expense Insights) project. Automates dependency updates and ensures consistency across all versions. This configuration is optimized for efficient dependency management, including patch updates, semantic commit conventions, and automatic scheduling of updates outside office hours. The goal is to streamline project maintenance while minimizing disruption to the development workflow.",
   "extends": [
     "config:recommended",
     ":automergePatch",

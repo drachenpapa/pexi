@@ -12,10 +12,10 @@ A clear and concise description of what the bug is.
 
 **How to reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Open PEXI.
+2. Add an income or expense transaction.
+3. Go to the dashboard or statistics page.
+4. Observe the incorrect value or chart rendering.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.

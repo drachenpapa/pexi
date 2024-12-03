@@ -5,6 +5,11 @@ import de.drachenpapa.pexi.utils.Messages;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Represents the main window of the Pexi application.
+ * This window contains a table for displaying transactions and buttons for adding,
+ * removing, and displaying statistics of the transactions.
+ */
 public class MainWindow {
 
     private JTable table;
@@ -13,6 +18,11 @@ public class MainWindow {
     private JButton removeButton;
     private JButton statisticsButton;
 
+    /**
+     * Constructs a new {@code MainWindow} instance and initializes the table and buttons.
+     * The buttons are labeled using the appropriate messages from the {@link Messages} utility.
+     * The table is populated with a default model based on predefined columns.
+     */
     public MainWindow() {
         addButton.setText(Messages.get("toolbar.add"));
         removeButton.setText(Messages.get("toolbar.remove"));
@@ -21,6 +31,12 @@ public class MainWindow {
         table.setModel(createTableModel());
     }
 
+    /**
+     * Creates and returns a {@link DefaultTableModel} for the transactions table,
+     * with predefined columns such as ID, date, amount, description, account ID, and category ID.
+     *
+     * @return a {@code DefaultTableModel} instance for the table.
+     */
     private DefaultTableModel createTableModel() {
         String[] columns = {
                 Messages.get("table.column.id"),
@@ -34,6 +50,11 @@ public class MainWindow {
         return new DefaultTableModel(columns, 0);
     }
 
+    /**
+     * Returns the main panel that contains the table and the toolbar buttons.
+     *
+     * @return the {@code JPanel} instance containing the main window's UI components.
+     */
     public JPanel getMainPanel() {
         return panel;
     }

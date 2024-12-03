@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-First off, thank you for considering contributing to this project.
+First off, thank you for considering contributing to **PEXI**!
 It's people like you that make this project and open source in general so great.
 
 Following these guidelines helps to communicate that you respect the time of the developers
@@ -17,21 +17,22 @@ and helping you finalize your pull requests.
 
 ## <a name="code-of-conduct"></a> Code of Conduct
 
-This project adheres to a strict [Code of Conduct](CODE_OF_CONDUCT.md).
-By participating, you are expected to uphold this code.
+This project adheres to a strict [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 Please report any unacceptable behavior to [@drachenpapa](https://github.com/drachenpapa).
 
 ## <a name="issues-and-bugs"></a> Found a Bug?
 
-If you find a bug in the source code, you can help us by [submitting an issue](#submit-issue)
-to our [GitHub Repository](https://github.com/drachenpapa/pexi/issues).
+If you find a bug in the source code, you can help us by [submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/drachenpapa/pexi/issues).
 Even better, you can [submit a Pull Request](#submit-pr) with a fix.
+
+### Reporting a Bug
+- **Provide a minimal, reproducible example**: This is crucial to verify the bug and fix it swiftly.
+- Search the issue tracker to ensure the issue hasn't already been reported.
 
 ## <a name="feature-requests"></a> Missing a Feature?
 
 If you have an idea for a new feature, we'd love to hear it!
-Please [submit an issue](https://github.com/drachenpapa/pexi/issues/new/choose) with details
-about the feature and how it would benefit the project.
+Please [submit an issue](https://github.com/drachenpapa/pexi/issues/new/choose) with details about the feature and how it would benefit the project.
 
 ## <a name="submission-guidelines"></a> Submission Guidelines
 
@@ -56,11 +57,17 @@ and filling out the issue template.
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 
+To contribute your code, follow these steps:
 1. Fork the repository.
 2. Create your feature branch: `git checkout -b my-new-feature`.
-3. Commit your changes: `git commit -m 'feat: add some feature'`.
+3. Commit your changes: `git commit -m 'feat: add new feature'`.
 4. Push to the branch: `git push origin my-new-feature`.
-5. Submit a pull request.
+5. Submit a pull request with a clear description of the changes you’ve made.
+
+When submitting a PR, please make sure to:
+- Ensure your changes are well tested.
+- Follow the [commit message guidelines](#commit-message-guidelines).
+- Include a description of the changes you’ve made in the PR.
 
 ## <a name="coding-rules"></a> Coding Rules
 
@@ -120,16 +127,15 @@ Use the summary field to provide a succinct description of the change:
 
 ### <a name="commit-body"></a> Commit Message Body
 
-The body must be used to inform about breaking changes or deprecations and is also the place to reference GitHub issues that this commit closes or is related to.
+The body should provide detailed information about the change. If applicable, mention any breaking changes or deprecations.
 
 For example:
 ```
-BREAKING CHANGE: <breaking change summary>
+BREAKING CHANGE: Changed the API endpoint for fetching user data
 <BLANK LINE>
-<breaking change description + migration path>
+The old endpoint /user-data is now deprecated. Use /user/info instead.
 <BLANK LINE>
-<BLANK LINE>
-Fixes #<issue number>
+Fixes #123
 ```
 
 or
@@ -154,7 +160,6 @@ If the commit reverts a previous commit, it should begin with `revert: `, follow
 The content of the commit message body should contain:
 - Information about the SHA of the commit being reverted in the following format: `This reverts commit <SHA>`.
 - A clear description of the reason for reverting the commit message.
-
 
 ## Thank You!
 Thanks again for your contribution, you're awesome! :heart:

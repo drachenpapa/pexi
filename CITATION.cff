@@ -8,10 +8,12 @@ version: 1.0.0
 date-released: 2024-07-04
 url: https://github.com/drachenpapa/pexi
 repository-code: https://github.com/drachenpapa/pexi
-license: CC BY 4.0
+license: MIT
 keywords:
-  - template
+  - personal finance
+  - growth
+  - insights
   - open source
-  - GitHub
+  - financial management
 abstract: >
-  Skeletor is an open-source project template designed to provide a robust starting point for new projects. It includes best practices for project structure, documentation, and configuration, making it easier to start new projects with a solid foundation.
+  PEXI (Personal Expense Insights) is an open-source personal finance tool designed to help users understand, manage, and grow their finances. The app offers simple, intuitive insights into income and expenses, while encouraging financial goal-setting and long-term growth. PEXI empowers users to track their financial progress and make informed decisions through a user-friendly interface, fostering financial success in a clear and motivating way.

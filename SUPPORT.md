@@ -1,14 +1,13 @@
 # Where should I ask my questions?
 
 > :information_source: This project has a [Code of Conduct](CODE_OF_CONDUCT.md).
-> By interacting with this repository or community, you agree to abide by its terms.
+> By interacting with this repository or community, you agree to follow the community guidelines and behave respectfully towards others.
 
-Hi! :wave:
+Hi! :wave:  
 
-We’re excited that you’re using this tool and we’d love to help.
+We’re excited that you’re using PEXI and we’d love to help you make the most out of it.
 To help us help you, please read through the following guidelines.
-Please understand that people involved with this project often do so for fun, next to their day job;
-you are not entitled to free customer service.
+Please understand that people involved with this project often do so for fun, next to their day job; you are not entitled to free customer service.
 
 ## Asking Quality Questions
 
@@ -26,7 +25,8 @@ Spending the extra time upfront can help save everyone time in the long run.
   * Is there a concept you’re not understanding?
 * Learn about the [rubber duck debugging method](https://rubberduckdebugging.com).
 * Avoid falling for the [XY problem](https://meta.stackexchange.com/questions/66377/what-is-the-xy-problem/66378#66378).
-* Search on GitHub to see if a similar question has been asked.
+* Search on GitHub to see if a similar question has been asked.  
+  You can check [GitHub issues](https://github.com/drachenpapa/pexi/issues/) or [Discussions](https://github.com/drachenpapa/pexi/discussions) for existing solutions.
 * If possible, provide sample code or a repository that demonstrates the problem.
 * The more time you put into asking your question, the better we can help you.
 
@@ -34,18 +34,20 @@ Spending the extra time upfront can help save everyone time in the long run.
 
 This project manages bugs and enhancements using the [GitHub issue tracker](https://github.com/drachenpapa/pexi/issues/).
 The issue templates will guide you on making an effective report.
+To report a bug or request a feature, please [open a new issue](https://github.com/drachenpapa/pexi/issues/new).
+Be sure to use the appropriate template for your report.
 
 ## How to Report a Security Vulnerability
 
-If you think you've found a potential vulnerability in this project,
-please directly message [@drachenpapa](https://github.com/drachenpapa/) to responsibly disclose it.
-We will address the issue as soon as possible.
-We appreciate your efforts to disclose the issue privately and give us an opportunity to fix it before disclosing it publicly.
+If you believe you’ve discovered a security vulnerability, please **do not** disclose it publicly.
+Instead, message [@drachenpapa](https://github.com/drachenpapa/) directly to responsibly disclose the issue.  
+We appreciate your efforts to give us the opportunity to address the issue privately before it becomes public.
 
 ## Contributions
 
-See [our contributing guidelines](CONTRIBUTING.md) on how to contribute.
+We welcome contributions! Please see our [contributing guidelines](CONTRIBUTING.md) for information on how you can help improve PEXI.
 
 ## License
 
-This project is licensed under [MIT License](LICENSE). © [Henning Steinberg (@drachenpapa)](https://github.com/drachenpapa/)
+This project is licensed under the [MIT License](LICENSE).  
+© [Henning Steinberg (@drachenpapa)](https://github.com/drachenpapa/)

@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Converts a ResultSet into a list of {@link Category}.
+ * Converts a {@link ResultSet} into a list of {@link Category}.
+ * <p>
+ * This class provides functionality to map the result of a SQL query into a list of {@link Category}
+ * objects. It extracts data from the {@link ResultSet}, where each row is used to create a new {@link Category}.
+ * </p>
  */
 public class CategoryConverter {
 
@@ -18,13 +22,18 @@ public class CategoryConverter {
     private static final String CATEGORY = "category";
     private static final String INCOME = "income";
 
-
     /**
-     * Converts a ResultSet into a list of {@link Category}.
+     * Converts a {@link ResultSet} into a list of {@link Category} objects.
+     * <p>
+     * This method reads each row of the provided {@link ResultSet} and creates a corresponding
+     * {@link Category} object. It maps the columns in the result set to the {@link Category} fields.
+     * </p>
      *
-     * @param resultSet the ResultSet to convert
-     * @return A list of {@link Category}.
-     * @throws SQLException if a database access error occurs
+     * @param resultSet the {@link ResultSet} to convert. It is expected to contain columns for
+     *                  category ID, name, type, and whether the category is for income or expense.
+     * @return A list of {@link Category} objects created from the result set.
+     *         If the result set is null or empty, an empty list will be returned.
+     * @throws SQLException if a database access error occurs or the result set is not properly formed.
      */
     public static List<Category> convert(ResultSet resultSet) throws SQLException {
         List<Category> categories = new ArrayList<>();
