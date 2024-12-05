@@ -25,9 +25,15 @@ jobs:
       - name: Extract version from pom.xml
         id: extract_version
         run: |
-          version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
-          echo "Extracted version: $version"
-          echo "version=$version" >> $GITHUB_ENV
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            $version = Select-String -Pattern '<version>(.*)</version>' -InputObject (Get-Content pom.xml) | ForEach-Object { $_.Matches.Groups[1].Value }
+            echo "Extracted version: $version"
+            echo "version=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          else
+            version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+            echo "Extracted version: $version"
+            echo "version=$version" >> $GITHUB_ENV
+          fi
       - name: Build application
         run: mvn -B package
       - name: Package application with jpackage
@@ -40,7 +46,7 @@ jobs:
             --name PEXI \
             --app-version ${{ env.version }} \
             --vendor "Henning Steinberg (drachenpapa)" \
-            --output dist/
+            --dest dist/
 #            --icon src/main/resources/logo.${{ matrix.os == 'windows-latest' && 'ico' || (matrix.os == 'macos-latest' && 'icns' || 'png') }} \
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
