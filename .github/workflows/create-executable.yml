@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v4
@@ -23,10 +23,8 @@ jobs:
           distribution: 'temurin'
       - name: Extract version from pom.xml
         id: extract_version
-        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            # PowerShell Befehl für Windows
             pwsh -command '
               $version = Select-String -Pattern "<version>(.*)</version>" -InputObject (Get-Content pom.xml) | ForEach-Object { $_.Matches.Groups[1].Value }
               $version = $version -replace "-SNAPSHOT", ""
@@ -34,7 +32,6 @@ jobs:
               Add-Content -Path $env:GITHUB_ENV -Value "version=$version"
             '
           else
-            # Bash-Befehl für Linux/Mac
             version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
             version=$(echo "$version" | sed 's/-SNAPSHOT//')
             echo "Extracted version: $version"
@@ -43,25 +40,25 @@ jobs:
       - name: Build application
         run: mvn -B package
       - name: Package application with jpackage
-        shell: bash
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             pwsh -command '
               mkdir dist
-              $app_version = $env:version
+              $app_version = $env:version -replace "-SNAPSHOT", ""
               $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$($env:version).jar --name PEXI --app-version $app_version --vendor \"Henning Steinberg (drachenpapa)\" --dest dist/"
               Write-Host "Running jpackage with command: $jpackage_cmd"
               Invoke-Expression $jpackage_cmd
             '
           else
             mkdir -p dist
+            app_version=$(echo "$version" | sed 's/-SNAPSHOT//')
             if [[ "$RUNNER_OS" == "macos-latest" ]]; then
               jpackage \
                 --type dmg \
                 --input target/ \
                 --main-jar pexi-${{ env.version }}.jar \
                 --name PEXI \
-                --app-version ${{ env.version }} \
+                --app-version "$app_version" \
                 --vendor "Henning Steinberg (drachenpapa)" \
                 --dest dist/
             else
@@ -70,7 +67,7 @@ jobs:
                 --input target/ \
                 --main-jar pexi-${{ env.version }}.jar \
                 --name PEXI \
-                --app-version ${{ env.version }} \
+                --app-version "$app_version" \
                 --vendor "Henning Steinberg (drachenpapa)" \
                 --dest dist/
             fi
