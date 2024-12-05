@@ -20,6 +20,7 @@ jobs:
           distribution: 'temurin'
       - name: Extract version from pom.xml
         id: extract_version
+        shell: bash
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             pwsh -command '
