@@ -25,6 +25,7 @@ jobs:
           version=$(echo "$version" | sed 's/-SNAPSHOT//')
           echo "Extracted version: $version"
           echo "version=$version" >> $GITHUB_ENV
+        shell: bash
       - name: Build the project
         run: mvn -B package
       - name: Package the application with jpackage
