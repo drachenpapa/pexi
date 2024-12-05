@@ -33,8 +33,9 @@ jobs:
         shell: pwsh
         run: |
           mkdir dist
-          $app_version = $env:version
-          $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$app_version.jar --name PEXI --app-version $app_version --dest dist"
+          $app_version = "${{ env.version }}"
+          Write-Host "Running jpackage with version: $app_version"
+          $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$app_version.jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist"
           Write-Host "Running jpackage with command: $jpackage_cmd"
           Invoke-Expression $jpackage_cmd
       - name: Upload packaged application
