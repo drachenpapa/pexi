@@ -13,11 +13,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+
       - name: Extract version from pom.xml
         id: extract_version
         shell: pwsh
@@ -27,17 +29,20 @@ jobs:
           $version = $version -replace "-SNAPSHOT", ""
           echo "Extracted version: $version"
           echo "version=$version" >> $GITHUB_ENV
+
       - name: Build the project
         run: mvn -B package
+
       - name: Package the application with jpackage
         shell: pwsh
         run: |
           mkdir dist
-          $app_version = "${{ env.version }}"
+          $app_version = $env:version  # Use PowerShell's environment variable syntax
           Write-Host "Running jpackage with version: $app_version"
           $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$app_version.jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist"
           Write-Host "Running jpackage with command: $jpackage_cmd"
           Invoke-Expression $jpackage_cmd
+
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
         with:
