@@ -9,10 +9,7 @@ on:
 jobs:
   package:
     name: Create native packages
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: windows-latest
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v4
@@ -31,17 +28,13 @@ jobs:
               Write-Host "Extracted version: $version"
               Add-Content -Path $env:GITHUB_ENV -Value "version=$version"
             '
-          else
-            version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
-            version=$(echo "$version" | sed 's/-SNAPSHOT//')
-            echo "Extracted version: $version"
-            echo "version=$version" >> $GITHUB_ENV
           fi
       - name: Build application
         run: mvn -B package
       - name: Package application with jpackage
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # Windows: Use PowerShell for packaging
             pwsh -command '
               mkdir dist
               $app_version = $env:version -replace "-SNAPSHOT", ""
@@ -49,28 +42,6 @@ jobs:
               Write-Host "Running jpackage with command: $jpackage_cmd"
               Invoke-Expression $jpackage_cmd
             '
-          else
-            mkdir -p dist
-            app_version=$(echo "$version" | sed 's/-SNAPSHOT//')
-            if [[ "$RUNNER_OS" == "macos-latest" ]]; then
-              jpackage \
-                --type dmg \
-                --input target/ \
-                --main-jar pexi-${{ env.version }}.jar \
-                --name PEXI \
-                --app-version "$app_version" \
-                --vendor "Henning Steinberg (drachenpapa)" \
-                --dest dist/
-            else
-              jpackage \
-                --type deb \
-                --input target/ \
-                --main-jar pexi-${{ env.version }}.jar \
-                --name PEXI \
-                --app-version "$app_version" \
-                --vendor "Henning Steinberg (drachenpapa)" \
-                --dest dist/
-            fi
           fi
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
