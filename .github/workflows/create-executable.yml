@@ -20,12 +20,14 @@ jobs:
           distribution: 'temurin'
       - name: Extract version from pom.xml
         id: extract_version
+        shell: pwsh
         run: |
-          version=$(grep -oP '<version>\K[^<]+' pom.xml | head -n 1)
-          version=$(echo "$version" | sed 's/-SNAPSHOT//')
+          # PowerShell: Extrahiere die Version aus der pom.xml
+          [xml]$pom = Get-Content pom.xml
+          $version = $pom.project.version
+          $version = $version -replace "-SNAPSHOT", ""
           echo "Extracted version: $version"
           echo "version=$version" >> $GITHUB_ENV
-        shell: bash
       - name: Build the project
         run: mvn -B package
       - name: Package the application with jpackage
@@ -34,7 +36,7 @@ jobs:
           app_version=$version
           jpackage_cmd="jpackage --type exe --input target/ --main-jar pexi-$version.jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
           echo "Running jpackage with command: $jpackage_cmd"
-          $jpackage_cmd
+          Invoke-Expression $jpackage_cmd
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
         with:
