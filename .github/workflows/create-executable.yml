@@ -1,0 +1,48 @@
+name: Create executables
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  package:
+    name: Create native packages
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Extract version from pom.xml
+        id: extract_version
+        run: |
+          version=$(grep -oPm1 "(?<=<version>)[^<]+" pom.xml)
+          echo "Extracted version: $version"
+          echo "version=$version" >> $GITHUB_ENV
+      - name: Build application
+        run: mvn -B package
+      - name: Package application with jpackage
+        run: |
+          mkdir -p dist
+          jpackage \
+            --type ${{ matrix.os == 'windows-latest' && 'exe' || (matrix.os == 'macos-latest' && 'pkg' || 'deb') }} \
+            --input target/ \
+            --main-jar pexi-${{ env.version }}.jar \
+            --name PEXI \
+            --app-version ${{ env.version }} \
+            --vendor "Henning Steinberg (drachenpapa)" \
+            --output dist/
+#            --icon src/main/resources/logo.${{ matrix.os == 'windows-latest' && 'ico' || (matrix.os == 'macos-latest' && 'icns' || 'png') }} \
+      - name: Upload packaged application
+        uses: actions/upload-artifact@v4
+        with:
+          name: PEXI-${{ matrix.os }}-package
+          path: dist/
