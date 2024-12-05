@@ -22,7 +22,6 @@ jobs:
         id: extract_version
         shell: pwsh
         run: |
-          # PowerShell: Extrahiere die Version aus der pom.xml
           [xml]$pom = Get-Content pom.xml
           $version = $pom.project.version
           $version = $version -replace "-SNAPSHOT", ""
@@ -31,10 +30,11 @@ jobs:
       - name: Build the project
         run: mvn -B package
       - name: Package the application with jpackage
+        shell: pwsh
         run: |
           mkdir dist
-          app_version=$version
-          jpackage_cmd="jpackage --type exe --input target/ --main-jar pexi-$version.jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
+          $app_version = $env:version
+          $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$app_version.jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
           echo "Running jpackage with command: $jpackage_cmd"
           Invoke-Expression $jpackage_cmd
       - name: Upload packaged application
