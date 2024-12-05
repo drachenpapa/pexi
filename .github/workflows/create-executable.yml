@@ -25,9 +25,17 @@ jobs:
         id: extract_version
         shell: bash
         run: |
-          version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
-          echo "Extracted version: $version"
-          echo "version=$version" >> $GITHUB_ENV
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            pwsh -command '
+              $version = Select-String -Pattern "<version>(.*)</version>" -InputObject (Get-Content pom.xml) | ForEach-Object { $_.Matches.Groups[1].Value }
+              Write-Host "Extracted version: $version"
+              Add-Content -Path $env:GITHUB_ENV -Value "version=$version"
+            '
+          else
+            version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+            echo "Extracted version: $version"
+            echo "version=$version" >> $GITHUB_ENV
+          fi
       - name: Build application
         run: mvn -B package
       - name: Package application with jpackage
@@ -42,7 +50,7 @@ jobs:
             Invoke-Expression $jpackage_cmd
           else
             jpackage \
-              --type ${{ matrix.os == 'windows-latest' && 'exe' || (matrix.os == 'macos-latest' && 'dmg' || 'deb') }} \
+              --type ${{ matrix.os == 'windows-latest' && 'exe' || (matrix.os == 'macos-latest' && 'pkg' || 'deb') }} \
               --input target/ \
               --main-jar pexi-${{ env.version }}.jar \
               --name PEXI \
