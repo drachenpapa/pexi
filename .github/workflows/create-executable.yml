@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest]
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v4
@@ -52,25 +52,14 @@ jobs:
           else
             mkdir -p dist
             app_version=$(echo "$version" | sed 's/-SNAPSHOT//')
-            if [[ "$RUNNER_OS" == "macos-latest" ]]; then
-              jpackage \
-                --type dmg \
-                --input target/ \
-                --main-jar pexi-${{ env.version }}.jar \
-                --name PEXI \
-                --app-version "$app_version" \
-                --vendor "Henning Steinberg (drachenpapa)" \
-                --dest dist/
-            else
-              jpackage \
-                --type deb \
-                --input target/ \
-                --main-jar pexi-${{ env.version }}.jar \
-                --name PEXI \
-                --app-version "$app_version" \
-                --vendor "Henning Steinberg (drachenpapa)" \
-                --dest dist/
-            fi
+            jpackage \
+              --type ${{ matrix.os == 'macos-latest' && 'dmg' || 'deb' }} \
+              --input target/ \
+              --main-jar pexi-${{ env.version }}.jar \
+              --name PEXI \
+              --app-version "$app_version" \
+              --vendor "Henning Steinberg (drachenpapa)" \
+              --dest dist/
           fi
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
