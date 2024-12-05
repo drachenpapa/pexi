@@ -34,8 +34,8 @@ jobs:
         run: |
           mkdir dist
           $app_version = $env:version
-          $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$app_version.jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
-          echo "Running jpackage with command: $jpackage_cmd"
+          $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$app_version.jar --name PEXI --app-version $app_version --vendor ""Henning Steinberg (drachenpapa)"" --dest dist"
+          Write-Host "Running jpackage with command: $jpackage_cmd"
           Invoke-Expression $jpackage_cmd
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
