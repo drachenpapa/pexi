@@ -23,9 +23,10 @@ jobs:
           distribution: 'temurin'
       - name: Extract version from pom.xml
         id: extract_version
-        shell: bash
+        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
+            # PowerShell Befehl für Windows
             pwsh -command '
               $version = Select-String -Pattern "<version>(.*)</version>" -InputObject (Get-Content pom.xml) | ForEach-Object { $_.Matches.Groups[1].Value }
               $version = $version -replace "-SNAPSHOT", ""
@@ -33,6 +34,7 @@ jobs:
               Add-Content -Path $env:GITHUB_ENV -Value "version=$version"
             '
           else
+            # Bash-Befehl für Linux/Mac
             version=$(grep "<version>" pom.xml | head -n 1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
             version=$(echo "$version" | sed 's/-SNAPSHOT//')
             echo "Extracted version: $version"
