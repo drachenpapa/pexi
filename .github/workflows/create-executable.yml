@@ -1,4 +1,4 @@
-name: Create executables
+name: Create Executable
 
 on:
   workflow_dispatch:
@@ -8,44 +8,40 @@ on:
 
 jobs:
   package:
-    name: Create native packages
+    name: Create Windows Executable
     runs-on: windows-latest
+
     steps:
-      - name: Checkout codebase
+      - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+
       - name: Extract version from pom.xml
         id: extract_version
-        shell: bash
         run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            pwsh -command '
-              $version = Select-String -Pattern "<version>(.*)</version>" -InputObject (Get-Content pom.xml) | ForEach-Object { $_.Matches.Groups[1].Value }
-              $version = $version -replace "-SNAPSHOT", ""
-              Write-Host "Extracted version: $version"
-              Add-Content -Path $env:GITHUB_ENV -Value "version=$version"
-            '
-          fi
-      - name: Build application
+          $version = Select-String -Pattern "<version>(.*)</version>" -InputObject (Get-Content pom.xml) | ForEach-Object { $_.Matches.Groups[1].Value }
+          $version = $version -replace "-SNAPSHOT", ""
+          Write-Host "Extracted version: $version"
+          Add-Content -Path $env:GITHUB_ENV -Value "version=$version"
+
+      - name: Build the project
         run: mvn -B package
-      - name: Package application with jpackage
+
+      - name: Package the application with jpackage
         run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            # Windows: Use PowerShell for packaging
-            pwsh -command '
-              mkdir dist
-              $app_version = $env:version -replace "-SNAPSHOT", ""
-              $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$($env:version).jar --name PEXI --app-version $app_version --vendor \"Henning Steinberg (drachenpapa)\" --dest dist/"
-              Write-Host "Running jpackage with command: $jpackage_cmd"
-              Invoke-Expression $jpackage_cmd
-            '
-          fi
+          mkdir dist
+          $app_version = $env:version
+          $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$($env:version).jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
+          Write-Host "Running jpackage with command: $jpackage_cmd"
+          Invoke-Expression $jpackage_cmd
+
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
         with:
-          name: PEXI-${{ env.version }}-${{ matrix.os }}
+          name: PEXI-${{ env.version }}-windows
           path: dist/
