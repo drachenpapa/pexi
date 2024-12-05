@@ -42,12 +42,13 @@ jobs:
       - name: Package application with jpackage
         run: |
           mkdir -p dist
+          app_version=$(echo "$version" | sed 's/-SNAPSHOT//')
           jpackage \
             --type ${{ matrix.os == 'windows-latest' && 'exe' || (matrix.os == 'macos-latest' && 'pkg' || 'deb') }} \
             --input target/ \
             --main-jar pexi-${{ env.version }}.jar \
             --name PEXI \
-            --app-version ${{ env.version }} \
+            --app-version "$app_version" \
             --vendor "Henning Steinberg (drachenpapa)" \
             --dest dist/
 #            --icon src/main/resources/logo.${{ matrix.os == 'windows-latest' && 'ico' || (matrix.os == 'macos-latest' && 'icns' || 'png') }} \
