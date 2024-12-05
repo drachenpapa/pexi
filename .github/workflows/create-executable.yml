@@ -39,27 +39,41 @@ jobs:
       - name: Build application
         run: mvn -B package
       - name: Package application with jpackage
+        shell: bash
         run: |
-          mkdir -p dist
-          app_version=$(echo "$version" | sed 's/-SNAPSHOT//')
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            mkdir -p dist
-            $app_version = $env:version -replace '-SNAPSHOT', ''
-            $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$($env:version).jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
-            Write-Host "Running jpackage with command: $jpackage_cmd"
-            Invoke-Expression $jpackage_cmd
+            pwsh -command '
+              mkdir dist
+              $app_version = $env:version -replace "-SNAPSHOT", ""
+              $jpackage_cmd = "jpackage --type exe --input target/ --main-jar pexi-$($env:version).jar --name PEXI --app-version $app_version --vendor 'Henning Steinberg (drachenpapa)' --dest dist/"
+              Write-Host "Running jpackage with command: $jpackage_cmd"
+              Invoke-Expression $jpackage_cmd
+            '
           else
-            jpackage \
-              --type ${{ matrix.os == 'windows-latest' && 'exe' || (matrix.os == 'macos-latest' && 'pkg' || 'deb') }} \
-              --input target/ \
-              --main-jar pexi-${{ env.version }}.jar \
-              --name PEXI \
-              --app-version "$app_version" \
-              --vendor "Henning Steinberg (drachenpapa)" \
-              --dest dist/
+            mkdir -p dist
+            app_version=$(echo "$version" | sed 's/-SNAPSHOT//')
+            if [[ "$RUNNER_OS" == "macos-latest" ]]; then
+              jpackage \
+                --type dmg \
+                --input target/ \
+                --main-jar pexi-${{ env.version }}.jar \
+                --name PEXI \
+                --app-version "$app_version" \
+                --vendor "Henning Steinberg (drachenpapa)" \
+                --dest dist/
+            else
+              jpackage \
+                --type deb \
+                --input target/ \
+                --main-jar pexi-${{ env.version }}.jar \
+                --name PEXI \
+                --app-version "$app_version" \
+                --vendor "Henning Steinberg (drachenpapa)" \
+                --dest dist/
+            fi
           fi
       - name: Upload packaged application
         uses: actions/upload-artifact@v4
         with:
-          name: PEXI-${{ matrix.os }}-package
+          name: PEXI-${{ env.version }}-${{ matrix.os }}
           path: dist/
