@@ -57,6 +57,20 @@
         </dependency>
     </dependencies>
 
+    <developers>
+        <developer>
+            <id>drachenpapa</id>
+            <name>Henning Steinberg</name>
+            <email></email>
+            <roles>
+                <role>developer</role>
+                <role>author</role>
+            </roles>
+            <organization></organization>
+            <organizationUrl></organizationUrl>
+        </developer>
+    </developers>
+
     <build>
         <resources>
             <resource>
